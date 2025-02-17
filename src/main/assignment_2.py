@@ -7,20 +7,17 @@ def nevilles():
     x = [3.6, 3.8, 3.9]
     val = [1.675, 1.436, 1.318]
     neville = [[0] * len(x) for _ in range(len(x))]
-    w = 3.7  # The value where we interpolate
+    w = 3.7  
 
-    # Initialize first column with function values
     for i in range(len(x)):
         neville[i][0] = val[i]
 
-    # Neville's recursive interpolation
     for i in range(1, len(x)):
         for j in range(1, i + 1):
             term1 = (w - x[i - j]) * neville[i][j - 1]
             term2 = (w - x[i]) * neville[i - 1][j - 1]
-            neville[i][j] = (term1 - term2) / (x[i] - x[i - j])  # Fixed index spacing
+            neville[i][j] = (term1 - term2) / (x[i] - x[i - j])  
 
-    # Return final interpolated value
     return neville[len(x) - 1][len(x) - 1]
 
 def newtonForward():
@@ -72,32 +69,26 @@ def newtonForwardInterpolation():
     print(interpolated_value)
 
 def cubic_spline_interpolation():
-    # Given data points
     x = np.array([2, 5, 8, 10])
     f = np.array([3, 5, 7, 9])
     n = len(x)
 
-    # Step sizes h_i
-    h = np.diff(x)  # h_i = x[i] - x[i-1]
+    h = np.diff(x)  
 
-    # Number of equations (excluding natural boundary)
     num_eqs = n - 2  
 
-    # Create matrix A
     A = np.zeros((n, n))
     b = np.zeros(n)
 
-    # Natural spline boundary conditions (first and last row)
     A[0, 0] = 1
     A[-1, -1] = 1
 
-    # Fill in the system of equations
+
     for i in range(1, num_eqs + 1):
         A[i, i - 1] = h[i - 1] 
         A[i, i] = 2 * (h[i - 1] + h[i])  
         A[i, i + 1] = h[i]  
 
-        # Compute right-hand side
         b[i] = (3 / h[i]) * (f[i + 1] - f[i]) - (3 / h[i - 1]) * (f[i] - f[i - 1])
 
         
